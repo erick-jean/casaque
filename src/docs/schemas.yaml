@@ -1,0 +1,70 @@
+components:
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: "João Silva"
+        email:
+          type: string
+          format: email
+          example: "joao@example.com"
+        telefone:
+          type: string
+          example: "1234567890"
+        cpf:
+          type: string
+          example: "12345678900"
+        tipo:
+          type: string
+          enum: [admin, corretor, cliente]
+          example: "admin"
+        data_cadastro:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00.000Z"
+        data_nascimento:
+          type: string
+          format: date-time
+          example: "1990-01-01T00:00:00.000Z"
+    
+    UsuarioInput:
+      type: object
+      required:
+        - nome
+        - email
+        - telefone
+        - cpf
+        - tipo
+        - data_nascimento
+        - senha
+      properties:
+        nome:
+          type: string
+          example: "João Silva"
+        email:
+          type: string
+          format: email
+          example: "joao@example.com"
+        telefone:
+          type: string
+          example: "1234567890"
+        cpf:
+          type: string
+          example: "12345678900"
+        tipo:
+          type: string
+          enum: [admin, corretor, cliente]
+          example: "admin"
+        data_nascimento:
+          type: string
+          format: date
+          example: "1990-01-01"
+        senha:
+          type: string
+          format: password
+          example: "minhasenha123"
