@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { listUsuers } from "../services/usuario.service";
 import { getUsuarioById } from "../services/usuario.service";
 import { deleteUsuarioById } from "../services/usuario.service";
+import { updateUsuario } from "../services/usuario.service";
 import { createUsuario, usuarioExistePorEmailOuCpf } from "../services/usuario.service";
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
@@ -109,4 +110,31 @@ export async function postUsuario(req: Request, res: Response) {
     res.status(500).json({ message: 'Erro interno ao criar usuário' });
   }
 }
+
+export async function patchUsuario(req: Request, res: Response) {
+  const id = parseInt(req.params.id, 10);
+  const dados = req.body;
+
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID inválido" });
+  }
+
+  if (!dados || Object.keys(dados).length === 0) {
+    return res.status(400).json({ error: "Nenhum campo enviado para atualização" });
+  }
+
+  try {
+    const usuario = await updateUsuario(id, dados);
+
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuário não encontrado ou sem dados para atualizar" });
+    }
+
+    res.json(usuario);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro ao atualizar usuário" });
+  }
+}
+
 

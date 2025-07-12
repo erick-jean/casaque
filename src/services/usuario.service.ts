@@ -68,3 +68,28 @@ export async function usuarioExistePorEmailOuCpf(
   );
   return (result.rowCount ?? 0) > 0;
 }
+
+
+export async function updateUsuario(
+  id: number,
+  dados: Partial<Omit<Usuario, "id" | "data_cadastro" | "senha_hash">>
+): Promise<Usuario | null> {
+  if (Object.keys(dados).length === 0) return null;
+
+  const campos = Object.keys(dados);
+  const valores = Object.values(dados);
+
+  const setClause = campos.map((campo, i) => `${campo} = $${i + 1}`).join(", ");
+
+  const query = `
+    UPDATE usuarios
+    SET ${setClause}
+    WHERE id = $${valores.length + 1}
+    RETURNING id, nome, email, telefone, cpf
+  `;
+
+  const result = await pool.query(query, [...valores, id]);
+
+  return result.rows[0] || null;
+}
+

@@ -71,7 +71,7 @@
               id: 2
               nome: "João Silva"
 
-/usuarios/{id}:
+/usuario/{id}:
   get:
     summary: Retorna um usuário pelo ID
     tags: [Usuário]
@@ -176,3 +176,34 @@
                   type: string
             example:
               erro: "Erro interno no servidor"
+
+  patch:
+    summary: Atualiza um usuário pelo ID
+    tags: [Usuário]
+    parameters:
+      - name: id
+        in: path
+        description: ID do usuário
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UsuarioInput"
+    responses:
+      200:
+        description: Usuário atualizado com sucesso
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Usuario"
+            example:
+              id: 1
+              nome: "João Silva"
+              email: "joao@example.com"
+              telefone: "1234567890"
+              cpf: "12345678900"
+              tipo: "admin"
