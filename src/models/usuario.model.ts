@@ -6,6 +6,6 @@ export interface Usuario {
   telefone: string;
   cpf: string;
   tipo: string;
-  data_cadastro?: Date;
-  data_nascimento: Date;
+  data_cadastro?: Date | null;
+  data_nascimento: Date | null;
 }

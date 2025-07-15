@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model caracteristicas {
+  id                     Int                      @id @default(autoincrement())
+  nome                   String                   @unique @db.VarChar(100)
+  imovel_caracteristicas imovel_caracteristicas[]
+}
+
+model corretores {
+  id             Int           @id @default(autoincrement())
+  usuario_id     Int           @unique
+  creci          String        @unique @db.VarChar(20)
+  creci_uf       String        @db.Char(2)
+  data_registro  DateTime      @db.Date
+  bio            String?
+  ativo          Boolean?      @default(true)
+  id_imobiliaria Int?
+  imobiliarias   imobiliarias? @relation(fields: [id_imobiliaria], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios       usuarios      @relation(fields: [usuario_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  imoveis        imoveis[]
+}
+
+model estados {
+  id        Int     @id
+  sigla     String  @unique @db.Char(2)
+  nome      String  @unique @db.VarChar(30)
+  regiao_id Int
+  regioes   regioes @relation(fields: [regiao_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model favoritos {
+  id            Int       @id @default(autoincrement())
+  usuario_id    Int
+  imovel_id     Int
+  data_cadastro DateTime? @default(now()) @db.Timestamp(6)
+  imoveis       imoveis   @relation(fields: [imovel_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  usuarios      usuarios  @relation(fields: [usuario_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([usuario_id, imovel_id], map: "unique_favorito")
+}
+
+model imobiliarias {
+  id            Int          @id @default(autoincrement())
+  nome          String       @db.VarChar(100)
+  cnpj          String       @unique @db.VarChar(18)
+  telefone      String       @db.VarChar(20)
+  email         String       @unique @db.VarChar(100)
+  endereco      String
+  data_cadastro DateTime?    @default(now()) @db.Timestamp(6)
+  corretores    corretores[]
+}
+
+model imoveis {
+  id                     Int                      @id @default(autoincrement())
+  titulo                 String                   @db.VarChar(100)
+  descricao              String?
+  subtipo_id             Int
+  tipoimovel_id          Int
+  preco                  Decimal                  @db.Decimal(12, 2)
+  area                   Int?
+  quartos                Int?
+  banheiros              Int?
+  vagas_garagem          Int?
+  endereco               String                   @db.VarChar(200)
+  numero                 String?                  @db.VarChar(20)
+  complemento            String?                  @db.VarChar(100)
+  bairro                 String                   @db.VarChar(100)
+  cidade                 String                   @db.VarChar(100)
+  estado                 String                   @db.Char(2)
+  cep                    String?                  @db.VarChar(9)
+  latitude               Decimal?                 @db.Decimal(10, 8)
+  longitude              Decimal?                 @db.Decimal(11, 8)
+  data_cadastro          DateTime?                @default(now()) @db.Timestamp(6)
+  data_atualizacao       DateTime?                @default(now()) @db.Timestamp(6)
+  disponivel             Boolean?                 @default(true)
+  destaque               Boolean?                 @default(false)
+  imagens                String[]
+  id_proprietario        Int?
+  id_corretor            Int?
+  area_util_hectares     Decimal?                 @db.Decimal(10, 2)
+  area_total_hectares    Decimal?                 @db.Decimal(10, 2)
+  salas                  Int?
+  andar                  Int?
+  area_privativa         Decimal?                 @db.Decimal(10, 2)
+  area_comum             Decimal?                 @db.Decimal(10, 2)
+  suites                 Int?
+  mobiliado              Boolean?                 @default(false)
+  aceita_animais         Boolean?                 @default(false)
+  views                  Int?                     @default(0)
+  estado_id              Int?
+  valor_iptu             Decimal?                 @db.Decimal(12, 2)
+  valor_condominio       Decimal?                 @db.Decimal(12, 2)
+  favoritos              favoritos[]
+  corretores             corretores?              @relation(fields: [id_corretor], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios               usuarios?                @relation(fields: [id_proprietario], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subtipos_imovel        subtipos_imovel          @relation(fields: [subtipo_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tipos_imovel           tipos_imovel             @relation(fields: [tipoimovel_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  imovel_caracteristicas imovel_caracteristicas[]
+}
+
+model imovel_caracteristicas {
+  id                Int             @id @default(autoincrement())
+  imovel_id         Int
+  caracteristica_id Int
+  caracteristicas   caracteristicas @relation(fields: [caracteristica_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  imoveis           imoveis         @relation(fields: [imovel_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([imovel_id, caracteristica_id])
+}
+
+model regioes {
+  id      Int       @id @default(autoincrement())
+  sigla   String    @unique @db.Char(2)
+  nome    String    @unique @db.VarChar(20)
+  estados estados[]
+}
+
+model subtipos_imovel {
+  id            Int          @id @default(autoincrement())
+  tipo_id       Int
+  nome          String       @unique @db.VarChar(30)
+  nome_exibicao String       @db.VarChar(50)
+  imoveis       imoveis[]
+  tipos_imovel  tipos_imovel @relation(fields: [tipo_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([tipo_id, nome])
+}
+
+model tipos_imovel {
+  id              Int               @id @default(autoincrement())
+  nome            String            @unique @db.VarChar(20)
+  imoveis         imoveis[]
+  subtipos_imovel subtipos_imovel[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model usuarios {
+  id              Int         @id @default(autoincrement())
+  nome            String      @db.VarChar(100)
+  email           String      @unique @db.VarChar(100)
+  senha_hash      String      @db.VarChar(255)
+  telefone        String      @db.VarChar(20)
+  cpf             String      @unique @db.VarChar(14)
+  tipo            String      @db.VarChar(20)
+  data_cadastro   DateTime?   @default(now()) @db.Timestamp(6)
+  data_nascimento DateTime?   @db.Date
+  corretores      corretores?
+  favoritos       favoritos[]
+  imoveis         imoveis[]
+}
