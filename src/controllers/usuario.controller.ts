@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getUsers, getUserById, postUser, checkUserExists, deleteUser } from "../services/usuario.service";
+import { getUsers, getUserById, postUser, checkUserExists, deleteUser, patchUser, updatePassword } from "../services/usuario.service";
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { error } from "console";
@@ -103,54 +103,56 @@ export async function deleteUserController(req: Request, res: Response) {
 }
 
 
-// // Exclui um usuário pelo ID
-// export async function deleteUsuario(req: Request, res: Response) {
-//   const id = parseInt(req.params.id, 10);
-//   if (isNaN(id)) {
-//     return res.status(400).json({ error: "ID inválido" });
-//   }
+const updateSchema = z.object({
+  nome: z.string().optional(),
+  email: z.string().email().optional(),
+  telefone: z.string().optional(),
+  cpf: z.string().optional(),
+  tipo: z.string().optional(),
+  data_nascimento: z.date().optional(),
+});
 
-//   try {
-//     const usuario = await deleteUsuarioById(id);
+export async function patchUsuarioController(req: Request, res: Response) {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
 
-//     if (usuario) {
-//       // Usuário encontrado e excluído — envia mensagem de sucesso
-//       return res.json({ message: "Usuário excluído com sucesso" });
-//     } else {
-//       // Usuário não encontrado
-//       return res.status(404).json({ error: "Usuário não encontrado" });
-//     }
 
-//   } catch (err) {
-//     console.error("Erro ao excluir usuário:", err);
-//     res.status(500).json({ error: "Erro no servidor" });
-//   }
-// }
+  try {
+    const validated = updateSchema.parse(req.body);
 
-// export async function patchUsuario(req: Request, res: Response) {
-//   const id = parseInt(req.params.id, 10);
-//   const dados = req.body;
+    // Converte data_nascimento, se existir
+    if (validated.data_nascimento) {
+      validated.data_nascimento = new Date(validated.data_nascimento);
+    }
 
-//   if (isNaN(id)) {
-//     return res.status(400).json({ error: "ID inválido" });
-//   }
+    const usuarioAtualizado = await patchUser(id, validated);
+    return res.json(usuarioAtualizado);
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({ error: 'Erro ao atualizar usuário', details: err });
+  }
+}
 
-//   if (!dados || Object.keys(dados).length === 0) {
-//     return res.status(400).json({ error: "Nenhum campo enviado para atualização" });
-//   }
+export async function updatePasswordController(req: Request, res: Response) {
+  const id = parseInt(req.params.id, 10);
+  const { actualPassword, newPassword } = req.body;
 
-//   try {
-//     const usuario = await updateUsuario(id, dados);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
 
-//     if (!usuario) {
-//       return res.status(404).json({ error: "Usuário não encontrado ou sem dados para atualizar" });
-//     }
+  if (!actualPassword || !newPassword) {
+    return res.status(400).json({ error: 'Senha atual e nova senha são obrigatórias' });
+  }
 
-//     res.json(usuario);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Erro ao atualizar usuário" });
-//   }
-// }
-
+  try {
+    await updatePassword(id, actualPassword, newPassword); // ✅ envia as senhas cruas
+    return res.json({ message: 'Senha atualizada com sucesso' });
+  } catch (err: any) {
+    console.error(err);
+    return res.status(400).json({ error: 'Erro ao atualizar senha', details: err.message });
+  }
+}
 

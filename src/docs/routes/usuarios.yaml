@@ -207,3 +207,64 @@
               telefone: "1234567890"
               cpf: "12345678900"
               tipo: "admin"
+
+/usuario/{id}/senha:
+  patch:
+    summary: Atualiza a senha de um usuário pelo ID
+    tags: [Usuário]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID do usuário
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdatePasswordInput"
+    responses:
+      200:
+        description: Senha atualizada com sucesso
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+            example:
+              message: "Senha atualizada com sucesso"
+      400:
+        description: ID inválido
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                erro:
+                  type: string
+            example:
+              erro: "ID inválido"
+      404:
+        description: Usuário não encontrado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                erro:
+                  type: string
+            example:
+              erro: "Usuário não encontrado"
+      500:
+        description: Erro interno do servidor
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                erro:
+                  type: string

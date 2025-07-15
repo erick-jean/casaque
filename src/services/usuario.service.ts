@@ -1,5 +1,7 @@
 import prisma from "../prisma";
 import { Usuario } from "../models/usuario.model";
+import { Prisma } from "@prisma/client";
+import bcrypt from 'bcrypt';
 
 export async function getUsers(): Promise<Usuario[]> {
   const result = await prisma.usuarios.findMany();
@@ -57,38 +59,27 @@ export async function deleteUser(id: number): Promise<Usuario | null> {
   });
 }
 
-// export async function deleteUsuarioById(id: number): Promise<boolean> {
-//   const result = await pool.query(
-//     `
-//     DELETE FROM usuarios
-//     WHERE id = $1
-//   `,
-//     [id]
-//   );
+export async function patchUser(
+  id: number,
+  data: Prisma.usuariosUpdateInput
+): Promise<Usuario | null> {
+  return await prisma.usuarios.update({
+    where: { id },
+    data,
+  });
+}
 
-//   // Retorna true se pelo menos 1 linha foi deletada
-//   return (result.rowCount ?? 0) > 0;
-// }
+export async function updatePassword(id: number, actualPassword: string, newPassword: string) {
+  const user = await prisma.usuarios.findUnique({ where: { id } });
+  if (!user) throw new Error('Usuário não encontrado');
 
-// export async function updateUsuario(
-//   id: number,
-//   dados: Partial<Omit<Usuario, "id" | "data_cadastro" | "senha_hash">>
-// ): Promise<Usuario | null> {
-//   if (Object.keys(dados).length === 0) return null;
+  const correctPassword = await bcrypt.compare(actualPassword, user.senha_hash);
+  if (!correctPassword) throw new Error('Senha atual incorreta');
 
-//   const campos = Object.keys(dados);
-//   const valores = Object.values(dados);
+  const newHash = await bcrypt.hash(newPassword, 10);
 
-//   const setClause = campos.map((campo, i) => `${campo} = $${i + 1}`).join(", ");
-
-//   const query = `
-//     UPDATE usuarios
-//     SET ${setClause}
-//     WHERE id = $${valores.length + 1}
-//     RETURNING id, nome, email, telefone, cpf
-//   `;
-
-//   const result = await pool.query(query, [...valores, id]);
-
-//   return result.rows[0] || null;
-// }
+  return await prisma.usuarios.update({
+    where: { id },
+    data: { senha_hash: newHash },
+  });
+}
