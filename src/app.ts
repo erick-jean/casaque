@@ -6,7 +6,7 @@ import 'dotenv/config';
 
 import authRoutes from './routes/auth.routes';
 import usuarioRoutes from './routes/usuario.routes';
-import moveisRoutes from './routes/moveis.routes';
+import moveisRoutes from './routes/imoveis.routes';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 

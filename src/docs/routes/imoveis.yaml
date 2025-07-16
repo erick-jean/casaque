@@ -1,0 +1,14 @@
+/imoveis:
+  get:
+    summary: Busca todos os imóveis
+    tags:
+      - Imóveis
+    responses:
+      200:
+        description: Lista de imóveis
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Imovel'
