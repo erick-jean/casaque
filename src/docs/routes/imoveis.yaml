@@ -1,3 +1,26 @@
+/imovel:
+  post:
+    summary: Cria um imovel
+    tags:
+      - Imóveis
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Imovel'
+    responses:
+      201:
+        description: Imovel criado com sucesso
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Imovel'
+      500:
+        description: Erro no servidor
+      400:
+        description: Erro ao criar imovel
+
 /imoveis:
   get:
     summary: Busca todos os imóveis
@@ -12,3 +35,45 @@
               type: array
               items:
                 $ref: '#/components/schemas/Imovel'
+
+/imoveis/corretor/{id}:
+  get:
+    summary: Busca imoveis pelo id do corretor
+    tags:
+      - Imóveis
+    parameters:
+      - name: id
+        in: path
+        description: ID do corretor
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: Imoveis encontrados
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Imovel'
+
+/imovel/{id}:
+  get:
+    summary: Busca um imovel pelo id
+    tags:
+      - Imóveis
+    parameters:
+      - name: id
+        in: path
+        description: ID do imovel
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: Imovel encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Imovel'

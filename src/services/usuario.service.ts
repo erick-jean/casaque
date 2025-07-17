@@ -9,11 +9,7 @@ export async function getUsers(): Promise<Usuario[]> {
 }
 
 export async function getUserById(id: number): Promise<Usuario | null> {
-  return await prisma.usuarios.findUnique({
-    where: {
-      id: id,
-    },
-  });
+  return await prisma.usuarios.findUnique({ where: { id: id, } });
 }
 
 export async function postUser(

@@ -39,3 +39,5 @@ export interface Imoveis {
   valor_iptu?: number | null;
   valor_condominio?: number | null;
 }
+
+export type ImovelCreateInput = Omit<Imoveis, "id">;

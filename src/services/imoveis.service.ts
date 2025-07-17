@@ -1,23 +1,25 @@
-import { Imoveis } from "../models/imoveis.model";
+import { Imoveis, ImovelCreateInput } from "../models/imoveis.model";
 import prisma from "../prisma";
+import { mapImovelPrismaToModel } from "../utils/imovelMapper";
 
-export async function getImoveis(): Promise<Imoveis[]> {  
+export async function getImoveis(): Promise<Imoveis[]> {
   const imoveisPrisma = await prisma.imoveis.findMany();
-  
-  const imoveis: Imoveis[] = imoveisPrisma.map((imovel) => ({
-    ...imovel,
-    preco: imovel.preco.toNumber(),
-    valor_iptu: imovel.valor_iptu?.toNumber() ?? null,
-    valor_condominio: imovel.valor_condominio?.toNumber() ?? null,
-    area_util_hectares: imovel.area_util_hectares?.toNumber() ?? null,
-    area_total_hectares: imovel.area_total_hectares?.toNumber() ?? null,
-    area_privativa: imovel.area_privativa?.toNumber() ?? null,
-    area_comum: imovel.area_comum?.toNumber() ?? null,
-    latitude: imovel.latitude?.toNumber() ?? null,
-    longitude: imovel.longitude?.toNumber() ?? null,
-    // converter outros Decimal que tiver no modelo
-  }));
+  return imoveisPrisma.map(mapImovelPrismaToModel);
+}
 
-  return imoveis;
+export async function getImovelbyId(id: number): Promise<Imoveis | null> {
+  const imovelPrisma = await prisma.imoveis.findUnique({ where: { id } });
+  if (!imovelPrisma) return null;
+  return mapImovelPrismaToModel(imovelPrisma);
+}
+
+export async function getImovelbyCorretorId(id: number): Promise<Imoveis[]> {
+  const imoveisPrisma = await prisma.imoveis.findMany({ where: { id_corretor: id } });
+  return imoveisPrisma.map(mapImovelPrismaToModel);
+}
+
+export async function postImovel(imovel: ImovelCreateInput): Promise<Imoveis | null> {
+  const postImovel = await prisma.imoveis.create({ data: imovel });
+  return mapImovelPrismaToModel(postImovel);
 }
 
