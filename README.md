@@ -53,7 +53,7 @@ http://localhost:3000/api-docs
 ```
 # 🛡️ Segurança
 
-Utilizamos Helmet para proteger as respostas HTTP.
-Configuração CORS para controlar acessos externos.
-Validação rigorosa de dados com Zod.
-Autenticação via JWT para rotas protegidas.
+* Utilizamos Helmet para proteger as respostas HTTP.
+* Configuração CORS para controlar acessos externos.
+* Validação rigorosa de dados com Zod.
+* Autenticação via JWT para rotas protegidas.
