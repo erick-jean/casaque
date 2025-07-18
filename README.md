@@ -22,28 +22,19 @@ API backend do projeto Casaque, construída em Node.js com TypeScript, Express e
 # Clone o repositório
 git clone https://github.com/erick-jean/casaque.git
 cd casaque
-
-# Instale as dependências
-npm install
-
 ```
 
-# 💻 Executando o Projeto
-## Modo Desenvolvimento
+# 💻 Executando o Projeto em docker
 ```bash
-npm run dev
+docker-compose up
 ```
-## Modo Desenvolvimento
+# Recuperando backup do banco de dados
 ```bash
-npm run build
-npm start
+docker cp C:\Users\erick.prado\Desktop\projetos\casaque\meu_banco.sql casaque_postgres:/backup.sql
 ```
+Depois, dentro do container:
 
-## 🔧 Configurações
-
-Configure as variáveis de ambiente criando um arquivo .env na raiz do projeto com as seguintes variáveis (ajuste conforme seu ambiente):
 ```bash
-DATABASE_URL=postgresql://usuario:senha@localhost:5432/nomedobanco
-JWT_SECRET=sua_chave_secreta
-PORT=3000
+docker exec -it casaque_postgres bash
+psql -U postgres -d postgres < /backup.sql
 ```
