@@ -11,6 +11,8 @@ import {
   getImoveisFavoritosController,
   deleteImovelController,
   updateImovelController,
+  postFavoritosController,
+  deleteFavoritosController,
   
 } from "../controllers/imoveis.controller";
 
@@ -29,6 +31,10 @@ router.get("/imoveis/subtipos", getSubTiposImovelController);
 router.get("/imoveis/caracteristicas", getCaracteristicasImovelController);
 
 router.get("/imoveis/favoritos", authenticateToken, getImoveisFavoritosController);
+
+router.post("/imovel/favorito", authenticateToken, postFavoritosController);
+
+router.delete("/imovel/favorito/:id", authenticateToken, deleteFavoritosController);
 
 router.post("/imovel", authenticateToken, postImovelController);
 

@@ -26,3 +26,8 @@ export async function patchCorretor(id: number, data: Prisma.corretoresUpdateInp
     const result = await prisma.corretores.update({ where: { id }, data });
     return result;
 }
+
+export async function deleteCorretor(id: number): Promise<Corretor | null> {
+    const result = await prisma.corretores.delete({ where: { id } });
+    return result;
+}

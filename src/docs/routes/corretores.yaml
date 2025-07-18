@@ -14,6 +14,25 @@ paths:
                 items:
                   $ref: '#/components/schemas/Corretor'
 
+  /corretor:
+    post:
+      summary: Cria um novo corretor
+      tags:
+        - Corretores
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CorretorInput'
+      responses:
+        '201':
+          description: Corretor criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Corretor'
+
   /corretor/{id}:
     get:
       summary: Retorna um corretor pelo ID

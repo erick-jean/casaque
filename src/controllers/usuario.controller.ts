@@ -1,8 +1,20 @@
 import { Request, Response } from "express";
-import { getUsers, getUserById, postUser, checkUserExists, deleteUser, patchUser, updatePassword } from "../services/usuario.service";
-import { z } from 'zod';
-import bcrypt from 'bcrypt';
+import {
+  getUsers,
+  getUserById,
+  postUser,
+  checkUserExists,
+  deleteUser,
+  patchUser,
+  updatePassword,
+} from "../services/usuario.service";
+import { z } from "zod";
+import bcrypt from "bcrypt";
 import { error } from "console";
+import {
+  checkCorretorExists,
+  postCorretores,
+} from "../services/corretores.service";
 
 // Busca todos os usuários
 export async function getUsuariosController(req: Request, res: Response) {
@@ -35,15 +47,15 @@ export async function getUserController(req: Request, res: Response) {
 
 // Esquema de validação com Zod
 const usuarioSchema = z.object({
-  nome: z.string().min(1, 'Nome é obrigatório'),
-  email: z.string().email('E-mail inválido'),
-  telefone: z.string().min(8, 'Telefone inválido'),
-  cpf: z.string().min(11, 'CPF inválido'),
-  tipo: z.enum(['corretor', 'particular', 'imobiliaria']), // exemplo de tipos
+  nome: z.string().min(1, "Nome é obrigatório"),
+  email: z.string().email("E-mail inválido"),
+  telefone: z.string().min(8, "Telefone inválido"),
+  cpf: z.string().min(11, "CPF inválido"),
+  tipo: z.enum(["corretor", "particular", "imobiliaria"]), // exemplo de tipos
   data_nascimento: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: 'Data de nascimento inválida',
+    message: "Data de nascimento inválida",
   }),
-  senha: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres'),
+  senha: z.string().min(6, "Senha deve ter no mínimo 6 caracteres"),
 });
 
 // // Cria um novo usuário
@@ -59,7 +71,7 @@ export async function postUserController(req: Request, res: Response) {
     // Verifica se e-mail ou CPF já existem
     const verification = await checkUserExists(email, cpf);
     if (verification) {
-      return res.status(409).json({ message: 'E-mail ou CPF já cadastrados' });
+      return res.status(409).json({ message: "E-mail ou CPF já cadastrados" });
     }
 
     const senha_hash = await bcrypt.hash(senha, 10);
@@ -74,12 +86,42 @@ export async function postUserController(req: Request, res: Response) {
       senha_hash
     );
 
+    if (newUser.tipo === "corretor") {
+      const corretorData = req.body.corretors;
+      if (!corretorData) {
+        return res.status(400).json({ message: "Dados do corretor são obrigatórios" });
+      }
+
+      const { creci, creci_uf, data_registro, bio, ativo, id_imobiliaria } = corretorData;
+
+      const checkCorretorExist = await checkCorretorExists(creci);
+      if (checkCorretorExist) {
+        return res.status(409).json({ message: "Corretor já cadastrado" });
+      }
+
+      try {
+        await postCorretores({
+          usuario_id: newUser.id,
+          creci,
+          creci_uf,
+          data_registro: data_registro ?? new Date(),
+          bio: bio ?? null,
+          ativo: ativo ?? true,
+          id_imobiliaria: id_imobiliaria ?? null,
+        });
+      } catch (error) {
+        console.error("Erro ao criar corretor:", error);
+        return res.status(500).json({ message: "Erro interno ao criar corretor" });
+      }
+    }
+
     return res.status(201).json(newUser);
   } catch (error) {
-    console.error('Erro ao criar usuário:', error);
-    res.status(500).json({ message: 'Erro interno ao criar usuário' });
+    console.error("Erro ao criar usuário:", error);
+    return res.status(500).json({ message: "Erro interno ao criar usuário" });
   }
 }
+
 
 export async function deleteUserController(req: Request, res: Response) {
   const id = parseInt(req.params.id, 10);
@@ -102,7 +144,6 @@ export async function deleteUserController(req: Request, res: Response) {
   }
 }
 
-
 const updateSchema = z.object({
   nome: z.string().optional(),
   email: z.string().email().optional(),
@@ -115,9 +156,8 @@ const updateSchema = z.object({
 export async function patchUsuarioController(req: Request, res: Response) {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
-    return res.status(400).json({ error: 'ID inválido' });
+    return res.status(400).json({ error: "ID inválido" });
   }
-
 
   try {
     const validated = updateSchema.parse(req.body);
@@ -131,7 +171,9 @@ export async function patchUsuarioController(req: Request, res: Response) {
     return res.json(usuarioAtualizado);
   } catch (err) {
     console.error(err);
-    return res.status(400).json({ error: 'Erro ao atualizar usuário', details: err });
+    return res
+      .status(400)
+      .json({ error: "Erro ao atualizar usuário", details: err });
   }
 }
 
@@ -140,19 +182,22 @@ export async function updatePasswordController(req: Request, res: Response) {
   const { actualPassword, newPassword } = req.body;
 
   if (isNaN(id)) {
-    return res.status(400).json({ error: 'ID inválido' });
+    return res.status(400).json({ error: "ID inválido" });
   }
 
   if (!actualPassword || !newPassword) {
-    return res.status(400).json({ error: 'Senha atual e nova senha são obrigatórias' });
+    return res
+      .status(400)
+      .json({ error: "Senha atual e nova senha são obrigatórias" });
   }
 
   try {
     await updatePassword(id, actualPassword, newPassword); // ✅ envia as senhas cruas
-    return res.json({ message: 'Senha atualizada com sucesso' });
+    return res.json({ message: "Senha atualizada com sucesso" });
   } catch (err: any) {
     console.error(err);
-    return res.status(400).json({ error: 'Erro ao atualizar senha', details: err.message });
+    return res
+      .status(400)
+      .json({ error: "Erro ao atualizar senha", details: err.message });
   }
 }
-

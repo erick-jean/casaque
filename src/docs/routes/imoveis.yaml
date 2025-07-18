@@ -167,13 +167,26 @@ paths:
         '500':
           description: Erro no servidor
 
-  /imovel/{id}/favorito:
+  /imovel/favorito:
     post:
       summary: Marca um imóvel como favorito
       tags:
         - Imóveis
-      security:
-        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavoritoImovelInput'
+      responses:
+        '200':
+          description: Imóvel marcado como favorito
+
+/imovel/favorito/{id}:
+    delete:
+      summary: Desmarca um imóvel como favorito
+      tags:
+        - Imóveis
       parameters:
         - name: id
           in: path
@@ -183,4 +196,4 @@ paths:
             type: integer
       responses:
         '200':
-          description: Imóvel marcado como favorito
+          description: Imóvel desmarcado como favorito

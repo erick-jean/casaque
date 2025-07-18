@@ -11,45 +11,6 @@
               type: array
               items:
                 $ref: "#/components/schemas/Usuario"
-            example:
-              - id: 1
-                nome: "João Silva"
-                email: "joao@example.com"
-                telefone: "1234567890"
-                cpf: "12345678900"
-                tipo: "admin"
-                data_cadastro: "2022-01-01T00:00:00.000Z"
-                data_nascimento: "1990-01-01T00:00:00.000Z"
-              - id: 2
-                nome: "Maria Santos"
-                email: "maria@example.com"
-                telefone: "9876543210"
-                cpf: "98765432100"
-                tipo: "particular"
-                data_cadastro: "2022-02-01T00:00:00.000Z"
-                data_nascimento: "1995-02-01T00:00:00.000Z"
-              - id: 3
-                nome: "Pedro Oliveira"
-                email: "pedro@example.com"
-                telefone: "5555555555"
-                cpf: "55555555555"
-                tipo: "corretor"
-                data_cadastro: "2022-03-01T00:00:00.000Z"
-                data_nascimento: "1998-03-01T00:00:00.000Z"  
-              - id: 4
-                nome: "Ana Pereira"
-                email: "ana@example.com"
-                telefone: "9999999999"
-                cpf: "99999999999"
-                tipo: "cliente"
-                data_cadastro: "2022-04-01T00:00:00.000Z"
-                data_nascimento: "2000-04-01T00:00:00.000Z"
-      500:
-        description: Erro no servidor
-        content:
-          application/json:
-            example:
-              erro: "Erro interno no servidor"
 
   post:
     summary: Cria um novo usuário
@@ -67,9 +28,7 @@
           application/json:
             schema:
               $ref: "#/components/schemas/UsuarioInput"
-            example:
-              id: 2
-              nome: "João Silva"
+        
 
 /usuario/{id}:
   get:

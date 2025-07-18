@@ -12,6 +12,9 @@ import {
   postImovel,
   updateImovel,
   getImoveisFavoritos,
+  isFavorito,
+  postFavoritos,
+  deleteFavoritos,
 } from "../services/imoveis.service";
 import { ImovelCreateInput, ImovelUpdateInput } from "../models/imoveis.model";
 
@@ -64,7 +67,7 @@ export async function getImovelbyCorretorIdController(
 export async function getTiposImovelController(req: Request, res: Response) {
   const tipos = await getTiposImovel();
   try {
-    if(tipos) {
+    if (tipos) {
       return res.json(tipos);
     }
   } catch (error) {
@@ -76,7 +79,7 @@ export async function getTiposImovelController(req: Request, res: Response) {
 export async function getSubTiposImovelController(req: Request, res: Response) {
   const tipos = await getSubTiposImovel();
   try {
-    if(tipos) {
+    if (tipos) {
       return res.json(tipos);
     }
   } catch (error) {
@@ -85,10 +88,13 @@ export async function getSubTiposImovelController(req: Request, res: Response) {
   }
 }
 
-export async function getCaracteristicasImovelController(req: Request, res: Response) {
+export async function getCaracteristicasImovelController(
+  req: Request,
+  res: Response
+) {
   const tipos = await getCaracteristicasImovel();
   try {
-    if(tipos) {
+    if (tipos) {
       return res.json(tipos);
     }
   } catch (error) {
@@ -97,10 +103,13 @@ export async function getCaracteristicasImovelController(req: Request, res: Resp
   }
 }
 
-export async function getImoveisFavoritosController(req: Request, res: Response) {
+export async function getImoveisFavoritosController(
+  req: Request,
+  res: Response
+) {
   const tipos = await getImoveisFavoritos();
   try {
-    if(tipos) {
+    if (tipos) {
       return res.json(tipos);
     }
   } catch (error) {
@@ -108,6 +117,43 @@ export async function getImoveisFavoritosController(req: Request, res: Response)
     res.status(500).send({ error: "Erro no servidor", details: error });
   }
 }
+
+export async function postFavoritosController(req: Request, res: Response) {
+  const idUser = parseInt(req.body.idUser, 10);
+  const idImovel = parseInt(req.body.idImovel, 10);
+
+  if (isNaN(idUser) || isNaN(idImovel)) {
+    return res.status(400).json({ error: "ID inválido" });
+  }
+
+  const checkFavorito = await isFavorito(idUser, idImovel);
+  if (checkFavorito) {
+    return res.status(400).json({ error: "Imóvel já favoritado" });
+  }
+
+  try {
+    const favorito = await postFavoritos(idUser, idImovel);
+    res.status(201).json(favorito);
+  } catch (err) {
+    console.error("Erro ao favoritar imóvel:", err);
+    res.status(500).send({ error: "Erro no servidor", details: err });
+  }
+}
+
+export async function deleteFavoritosController(req: Request, res: Response) {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID inválido" });
+  }
+  try {
+    const favorito = await deleteFavoritos(id);
+    res.json(favorito);
+  } catch (err) {
+    console.error("Erro ao desfavoritar imóvel:", err);
+    res.status(500).send({ error: "Erro no servidor", details: err });
+  }
+}
+
 
 export async function postImovelController(req: AuthRequest, res: Response) {
   try {

@@ -21,8 +21,8 @@ components:
           example: "12345678900"
         tipo:
           type: string
-          enum: [admin, corretor, cliente]
-          example: "admin"
+          enum: [corretor, particular]
+          example: "corretor"
         data_cadastro:
           type: string
           format: date-time
@@ -31,9 +31,39 @@ components:
           type: string
           format: date-time
           example: "1990-01-01T00:00:00.000Z"
-    
+
     UsuarioInput:
       type: object
+      properties:
+        nome:
+          type: string
+          example: "Carlos Souza"
+        email:
+          type: string
+          format: email
+          example: "carlos@email.com"
+        telefone:
+          type: string
+          example: "11999990003"
+        cpf:
+          type: string
+          example: "12345678903"
+        tipo:
+          type: string
+          enum:
+            - corretor
+            - particular
+          example: "corretor"
+        data_nascimento:
+          type: string
+          format: date
+          example: "1985-03-15"
+        senha:
+          type: string
+          format: password
+          example: "senha123"
+        corretors:
+          $ref: '#/components/schemas/CorretorInput'
       required:
         - nome
         - email
@@ -42,24 +72,6 @@ components:
         - tipo
         - data_nascimento
         - senha
-      properties:
-        nome:
-          type: string
-          example: "João Silva"
-        email:
-          type: string
-          format: email
-          example: "joao@example.com"
-        telefone:
-          type: string
-          example: "1234567890"
-        cpf:
-          type: string
-          example: "12345678900"
-        data_nascimento:
-          type: string
-          format: date
-          example: "1990-01-01"
 
     LoginInput:
       type: object
@@ -75,7 +87,7 @@ components:
           type: string
           format: password
           example: "minhasenha123"
-    
+
     UpdatePasswordInput:
       type: object
       required:
@@ -437,7 +449,7 @@ components:
           type: integer
           nullable: true
           example: 1
-    
+
     CorretorInput:
       type: object
       properties:
@@ -455,3 +467,13 @@ components:
           type: boolean
           nullable: true
           example: true
+
+    FavoritoImovelInput:
+      type: object
+      properties:
+        idUser:
+          type: integer
+          example: 1
+        idImovel:
+          type: integer
+          example: 1
