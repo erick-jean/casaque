@@ -33,3 +33,17 @@ npm install
 ```bash
 npm run dev
 ```
+## Modo Desenvolvimento
+```bash
+npm run build
+npm start
+```
+
+## 🔧 Configurações
+
+Configure as variáveis de ambiente criando um arquivo .env na raiz do projeto com as seguintes variáveis (ajuste conforme seu ambiente):
+```bash
+DATABASE_URL=postgresql://usuario:senha@localhost:5432/nomedobanco
+JWT_SECRET=sua_chave_secreta
+PORT=3000
+```
