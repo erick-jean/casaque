@@ -24,17 +24,36 @@ git clone https://github.com/erick-jean/casaque.git
 cd casaque
 ```
 
-# 💻 Executando o Projeto em docker
+# 🐳 Executando com Docker
+Para subir toda a aplicação e o banco PostgreSQL usando Docker Compose:
 ```bash
-docker-compose up
+docker-compose up -d
 ```
-# Recuperando backup do banco de dados
+# 🗂️ Restaurando Backup do Banco de Dados
+Se desejar restaurar um backup .sql no container do PostgreSQL, siga os passos:
+## 1.Copie o arquivo de backup para o container:
 ```bash
-docker cp C:\Users\erick.prado\Desktop\projetos\casaque\meu_banco.sql casaque_postgres:/backup.sql
+docker cp caminho/para/seu/backup.sql casaque_postgres:/backup.sql
 ```
-Depois, dentro do container:
-
+## 2.Acesse o container:
 ```bash
 docker exec -it casaque_postgres bash
+```
+## 3.Execute o comando para restaurar o banco:
+```bash
 psql -U postgres -d postgres < /backup.sql
 ```
+
+# 📖 Documentação da API
+A API possui documentação interativa via Swagger, acessível em:
+
+```bash
+http://localhost:3000/api-docs
+
+```
+# 🛡️ Segurança
+
+Utilizamos Helmet para proteger as respostas HTTP.
+Configuração CORS para controlar acessos externos.
+Validação rigorosa de dados com Zod.
+Autenticação via JWT para rotas protegidas.
