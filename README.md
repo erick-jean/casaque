@@ -2,7 +2,7 @@
 
 API backend do projeto Casaque, construída em Node.js com TypeScript, Express e Prisma ORM para gerenciar funcionalidades relacionadas a usuários, imóveis e corretores. A API conta com autenticação JWT, documentação Swagger e foco em segurança.
 
-## 🧰 Tecnologias Utilizadas
+## 🧰 Tecnologias Utilizadas 
 
 - Node.js
 - TypeScript
@@ -25,3 +25,11 @@ cd casaque
 
 # Instale as dependências
 npm install
+
+```
+
+## 💻 Executando o Projeto
+# Modo Desenvolvimento
+```bash
+npm run dev
+```
