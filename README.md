@@ -20,7 +20,7 @@ API backend do projeto Casaque, construída em Node.js com TypeScript, Express e
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/casaque.git
+git clone https://github.com/erick-jean/casaque.git
 cd casaque
 
 # Instale as dependências
