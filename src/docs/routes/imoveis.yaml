@@ -3,19 +3,21 @@
     summary: Cria um imovel
     tags:
       - Imóveis
+    security:
+      - bearerAuth: []
     requestBody:
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Imovel'
+            $ref: '#/components/schemas/ImovelCreateInput'
     responses:
       201:
         description: Imovel criado com sucesso
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Imovel'
+              $ref: '#/components/schemas/ImovelCreateInput'
       500:
         description: Erro no servidor
       400:
@@ -77,3 +79,51 @@
           application/json:
             schema:
               $ref: '#/components/schemas/Imovel'
+  
+  delete:
+    summary: Exclui um imovel pelo id
+    tags:
+      - Imóveis
+    parameters:
+      - name: id
+        in: path
+        description: ID do imovel
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: Imovel excluido com sucesso
+
+  patch:
+    summary: Atualiza um imóvel pelo ID
+    tags:
+      - Imóveis
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        description: ID do imóvel
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ImovelCreateInput'
+    responses:
+      200:
+        description: Imóvel atualizado com sucesso
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Imovel'
+      400:
+        description: Erro de validação
+      404:
+        description: Imóvel não encontrado
+      500:
+        description: Erro no servidor

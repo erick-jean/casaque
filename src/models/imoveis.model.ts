@@ -4,7 +4,7 @@ export interface Imoveis {
   descricao: string | null;
   subtipo_id: number;
   tipoimovel_id: number;
-  preco: number;
+  preco?: number | null;
   area?: number | null;
   quartos?: number | null;
   banheiros?: number | null;
@@ -41,3 +41,5 @@ export interface Imoveis {
 }
 
 export type ImovelCreateInput = Omit<Imoveis, "id">;
+
+export type ImovelUpdateInput = Partial<ImovelCreateInput>;

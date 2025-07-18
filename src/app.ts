@@ -26,6 +26,18 @@ const options = {
       title: 'API Documentation',
       version: '1.0.0',
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [{
+      bearerAuth: [],
+    }],
   },
   apis: [
     path.join(__dirname, 'docs/routes/*.yaml'),

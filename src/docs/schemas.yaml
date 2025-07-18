@@ -249,3 +249,159 @@ components:
           format: float
           nullable: true
           example: null
+
+    ImovelCreateInput:
+      type: object
+      properties:
+        titulo:
+          type: string
+          example: "Apartamento Moderno no Centro"
+        descricao:
+          type: string
+          nullable: true
+          example: "Apartamento 3 quartos com suíte, varanda e área de lazer completa."
+        subtipo_id:
+          type: integer
+          example: 2
+        tipoimovel_id:
+          type: integer
+          example: 1
+        preco:
+          type: number
+          example: 550000
+        area:
+          type: integer
+          nullable: true
+          example: 121
+        quartos:
+          type: integer
+          nullable: true
+          example: 3
+        banheiros:
+          type: integer
+          nullable: true
+          example: 2
+        vagas_garagem:
+          type: integer
+          nullable: true
+          example: 2
+        endereco:
+          type: string
+          example: "Rua das Flores"
+        numero:
+          type: string
+          nullable: true
+          example: "123"
+        complemento:
+          type: string
+          nullable: true
+          example: "Apto 301"
+        bairro:
+          type: string
+          example: "Centro"
+        cidade:
+          type: string
+          example: "Campo Grande"
+        estado:
+          type: string
+          example: "MS"
+        cep:
+          type: string
+          example: "79002100"
+        latitude:
+          type: number
+          format: float
+          nullable: true
+          example: -20.4673
+        longitude:
+          type: number
+          format: float
+          nullable: true
+          example: -54.6201
+        data_cadastro:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2025-07-09T00:00:00.000Z"
+        data_atualizacao:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2025-07-09T00:00:00.000Z"
+        disponivel:
+          type: boolean
+          example: true
+        destaque:
+          type: boolean
+          example: true
+        imagens:
+          type: array
+          items:
+            type: string
+          example: ["img1.jpg", "img2.jpg"]
+        id_proprietario:
+          type: integer
+          nullable: true
+          example: null
+        id_corretor:
+          type: integer
+          nullable: true
+          example: 2
+        area_util_hectares:
+          type: number
+          format: float
+          nullable: true
+          example: null
+        area_total_hectares:
+          type: number
+          format: float
+          nullable: true
+          example: null
+        salas:
+          type: integer
+          nullable: true
+          example: 2
+        andar:
+          type: integer
+          nullable: true
+          example: 3
+        area_privativa:
+          type: number
+          format: float
+          nullable: true
+          example: 85.5
+        area_comum:
+          type: number
+          format: float
+          nullable: true
+          example: 35
+        suites:
+          type: integer
+          nullable: true
+          example: 1
+        mobiliado:
+          type: boolean
+          nullable: true
+          example: false
+        aceita_animais:
+          type: boolean
+          nullable: true
+          example: true
+        views:
+          type: integer
+          nullable: true
+          example: 100
+        estado_id:
+          type: integer
+          nullable: true
+          example: 26
+        valor_iptu:
+          type: number
+          format: float
+          nullable: true
+          example: null
+        valor_condominio:
+          type: number
+          format: float
+          nullable: true
+          example: null

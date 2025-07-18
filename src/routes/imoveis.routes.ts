@@ -1,16 +1,26 @@
-import { Router } from 'express';
-import { getImoveisController, getImovelIdController, postImovelController, getImovelbyCorretorIdController } from '../controllers/imoveis.controller';
+import { Router } from "express";
+import { authenticateToken } from "../middlewares/auth";
+import {
+  getImoveisController,
+  getImovelIdController,
+  postImovelController,
+  getImovelbyCorretorIdController,
+  deleteImovelController,
+  updateImovelController
+} from "../controllers/imoveis.controller";
 
 const router = Router();
 
-router.get('/imoveis', getImoveisController);
+router.get("/imoveis", getImoveisController);
 
-router.get('/imovel/:id', getImovelIdController);
+router.get("/imovel/:id", getImovelIdController);
 
-router.get('/imoveis/corretor/:id', getImovelbyCorretorIdController);
+router.get("/imoveis/corretor/:id", getImovelbyCorretorIdController);
 
-router.post('/imovel', postImovelController);
+router.post("/imovel", authenticateToken, postImovelController);
 
-//router.get('/imoveis/proprietario/:id', getImovelbyProprietarioIdController);
+router.delete("/imovel/:id", authenticateToken, deleteImovelController);
+
+router.patch("/imovel/:id",authenticateToken, updateImovelController);
 
 export default router;
