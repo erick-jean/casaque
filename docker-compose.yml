@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    container_name: casaque_postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: postgres
+    networks:
+      - casaque-net
+
+  api:
+    build: .
+    container_name: casaque_api
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:123456@postgres:5432/postgres
+    depends_on:
+      - postgres
+    networks:
+      - casaque-net
+
+networks:
+  casaque-net:
