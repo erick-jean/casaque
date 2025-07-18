@@ -31,6 +31,7 @@ docker-compose up -d
 ```
 # 🗂️ Restaurando Backup do Banco de Dados
 Se desejar restaurar um backup .sql no container do PostgreSQL, siga os passos:
+Eu já deixei um arquivo sql na raiz do projeto para você resataurar
 ## 1.Copie o arquivo de backup para o container:
 ```bash
 docker cp caminho/para/seu/backup.sql casaque_postgres:/backup.sql
