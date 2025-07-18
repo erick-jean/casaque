@@ -1,167 +1,186 @@
-/imovel:
-  post:
-    summary: Cria um imovel
-    tags:
-      - Imóveis
-    security:
-      - bearerAuth: []
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ImovelCreateInput'
-    responses:
-      201:
-        description: Imovel criado com sucesso
+paths:
+  /imovel:
+    post:
+      summary: Cria um imóvel
+      tags:
+        - Imóveis
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ImovelCreateInput'
-      500:
-        description: Erro no servidor
-      400:
-        description: Erro ao criar imovel
+      responses:
+        '201':
+          description: Imóvel criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImovelCreateInput'
+        '400':
+          description: Erro ao criar imóvel
+        '500':
+          description: Erro no servidor
 
-/imoveis:
-  get:
-    summary: Busca todos os imóveis
-    tags:
-      - Imóveis
-    responses:
-      200:
-        description: Lista de imóveis
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Imovel'
+  /imoveis:
+    get:
+      summary: Busca todos os imóveis
+      tags:
+        - Imóveis
+      responses:
+        '200':
+          description: Lista de imóveis
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Imovel'
 
-/imoveis/tipos:
-  get:
-    summary: Busca todos os tipos de imoveis
-    tags:
-      - Imóveis
-    responses:
-      200:
-        description: Tipos de imoveis
+  /imoveis/tipos:
+    get:
+      summary: Busca todos os tipos de imóveis
+      tags:
+        - Imóveis
+      responses:
+        '200':
+          description: Tipos de imóveis
 
-/imoveis/subtipos:
-  get:
-    summary: Busca todos os subtipos de imoveis
-    tags:
-      - Imóveis
-    responses:
-      200:
-        description: Subtipos de imoveis
+  /imoveis/subtipos:
+    get:
+      summary: Busca todos os subtipos de imóveis
+      tags:
+        - Imóveis
+      responses:
+        '200':
+          description: Subtipos de imóveis
 
-/imoveis/caracteristicas:
-  get:
-    summary: Busca todas as caracteristicas de imoveis
-    tags:
-      - Imóveis
-    responses:
-      200:
-        description: Caracteristicas de imoveis
+  /imoveis/caracteristicas:
+    get:
+      summary: Busca todas as características de imóveis
+      tags:
+        - Imóveis
+      responses:
+        '200':
+          description: Características de imóveis
 
-/imoveis/favoritos:
-  get:
-    summary: Busca todos os imoveis favoritos
-    tags:
-      - Imóveis
-    security:
-      - bearerAuth: []
-    responses:
-      200:
-        description: Imoveis favoritos
+  /imoveis/favoritos:
+    get:
+      summary: Busca todos os imóveis favoritos
+      tags:
+        - Imóveis
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Imóveis favoritos
 
-/imoveis/corretor/{id}:
-  get:
-    summary: Busca imoveis pelo id do corretor
-    tags:
-      - Imóveis
-    parameters:
-      - name: id
-        in: path
-        description: ID do corretor
-        required: true
-        schema:
-          type: integer
-    responses:
-      200:
-        description: Imoveis encontrados
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Imovel'
-
-/imovel/{id}:
-  get:
-    summary: Busca um imovel pelo id
-    tags:
-      - Imóveis
-    parameters:
-      - name: id
-        in: path
-        description: ID do imovel
-        required: true
-        schema:
-          type: integer
-    responses:
-      200:
-        description: Imovel encontrado
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Imovel'
-  
-  delete:
-    summary: Exclui um imovel pelo id
-    tags:
-      - Imóveis
-    parameters:
-      - name: id
-        in: path
-        description: ID do imovel
-        required: true
-        schema:
-          type: integer
-    responses:
-      200:
-        description: Imovel excluido com sucesso
-
-  patch:
-    summary: Atualiza um imóvel pelo ID
-    tags:
-      - Imóveis
-    security:
-      - bearerAuth: []
-    parameters:
-      - name: id
-        in: path
-        description: ID do imóvel
-        required: true
-        schema:
-          type: integer
-    requestBody:
-      required: true
-      content:
-        application/json:
+  /imoveis/corretor/{id}:
+    get:
+      summary: Busca imóveis pelo ID do corretor
+      tags:
+        - Imóveis
+      parameters:
+        - name: id
+          in: path
+          description: ID do corretor
+          required: true
           schema:
-            $ref: '#/components/schemas/ImovelCreateInput'
-    responses:
-      200:
-        description: Imóvel atualizado com sucesso
+            type: integer
+      responses:
+        '200':
+          description: Imóveis encontrados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Imovel'
+
+  /imovel/{id}:
+    get:
+      summary: Busca um imóvel pelo ID
+      tags:
+        - Imóveis
+      parameters:
+        - name: id
+          in: path
+          description: ID do imóvel
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Imóvel encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Imovel'
+
+    delete:
+      summary: Exclui um imóvel pelo ID
+      tags:
+        - Imóveis
+      parameters:
+        - name: id
+          in: path
+          description: ID do imóvel
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Imóvel excluído com sucesso
+
+    patch:
+      summary: Atualiza um imóvel pelo ID
+      tags:
+        - Imóveis
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID do imóvel
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Imovel'
-      400:
-        description: Erro de validação
-      404:
-        description: Imóvel não encontrado
-      500:
-        description: Erro no servidor
+              $ref: '#/components/schemas/ImovelCreateInput'
+      responses:
+        '200':
+          description: Imóvel atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Imovel'
+        '400':
+          description: Erro de validação
+        '404':
+          description: Imóvel não encontrado
+        '500':
+          description: Erro no servidor
+
+  /imovel/{id}/favorito:
+    post:
+      summary: Marca um imóvel como favorito
+      tags:
+        - Imóveis
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID do imóvel
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Imóvel marcado como favorito

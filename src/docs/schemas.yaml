@@ -405,3 +405,53 @@ components:
           format: float
           nullable: true
           example: null
+
+    Corretor:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        usuario_id:
+          type: integer
+          example: 2
+        creci:
+          type: string
+          example: "12345F"
+        creci_uf:
+          type: string
+          example: "SP"
+        data_registro:
+          type: string
+          format: date-time
+          example: "2025-05-30T00:00:00.000Z"
+        bio:
+          type: string
+          nullable: true
+          example: "Especialista em vendas de apartamentos na região central."
+        ativo:
+          type: boolean
+          nullable: true
+          example: true
+        id_imobiliaria:
+          type: integer
+          nullable: true
+          example: 1
+    
+    CorretorInput:
+      type: object
+      properties:
+        creci:
+          type: string
+          example: "12345F"
+        creci_uf:
+          type: string
+          example: "SP"
+        bio:
+          type: string
+          nullable: true
+          example: "Especialista em vendas de apartamentos na região central."
+        ativo:
+          type: boolean
+          nullable: true
+          example: true

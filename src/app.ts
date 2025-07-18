@@ -7,6 +7,7 @@ import 'dotenv/config';
 import authRoutes from './routes/auth.routes';
 import usuarioRoutes from './routes/usuario.routes';
 import moveisRoutes from './routes/imoveis.routes';
+import corretoresRoutes from './routes/corretores.routes';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
@@ -51,6 +52,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use(authRoutes);
 app.use(usuarioRoutes);
 app.use(moveisRoutes);
+app.use(corretoresRoutes);
 
 // Middleware de erro 404
 app.use((_req: Request, res: Response) => {

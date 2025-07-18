@@ -1,0 +1,62 @@
+paths:
+  /corretores:
+    get:
+      summary: Retorna todos os corretores
+      tags:
+        - Corretores
+      responses:
+        '200':
+          description: Lista de corretores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Corretor'
+
+  /corretor/{id}:
+    get:
+      summary: Retorna um corretor pelo ID
+      tags:
+        - Corretores
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Corretor encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Corretor'
+        '404':
+          description: Corretor não encontrado
+
+    patch:
+      summary: Atualiza um corretor pelo ID
+      tags:
+        - Corretores
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CorretorInput'
+      responses:
+        '200':
+          description: Corretor atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Corretor'
