@@ -31,6 +31,26 @@ export async function getImovelbyCorretorId(id: number): Promise<Imoveis[]> {
   return imoveisPrisma.map(mapImovelPrismaToModel);
 }
 
+export async function getTiposImovel() {
+  const tipos_imovel = await prisma.tipos_imovel.findMany();
+  return tipos_imovel;
+}
+
+export async function getSubTiposImovel() {
+  const subtipos_imovel = await prisma.subtipos_imovel.findMany();
+  return subtipos_imovel;
+}
+
+export async function getCaracteristicasImovel() {
+  const caracteristicas = await prisma.caracteristicas.findMany();
+  return caracteristicas;
+}
+
+export async function getImoveisFavoritos() {
+  const favoritos = await prisma.favoritos.findMany();
+  return favoritos;
+}
+
 export async function postImovel(imovel: ImovelCreateInput): Promise<Imoveis | null> {
   const postImovel = await prisma.imoveis.create({ data: imovel });
   return mapImovelPrismaToModel(postImovel);
@@ -45,6 +65,5 @@ export async function updateImovel(id: number, imovel: Prisma.imoveisUpdateInput
   const updateImovel = await prisma.imoveis.update({ where: { id }, data: imovel });
   return mapImovelPrismaToModel(updateImovel);
 }
-
 
 

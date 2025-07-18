@@ -38,6 +38,44 @@
               items:
                 $ref: '#/components/schemas/Imovel'
 
+/imoveis/tipos:
+  get:
+    summary: Busca todos os tipos de imoveis
+    tags:
+      - Imóveis
+    responses:
+      200:
+        description: Tipos de imoveis
+
+/imoveis/subtipos:
+  get:
+    summary: Busca todos os subtipos de imoveis
+    tags:
+      - Imóveis
+    responses:
+      200:
+        description: Subtipos de imoveis
+
+/imoveis/caracteristicas:
+  get:
+    summary: Busca todas as caracteristicas de imoveis
+    tags:
+      - Imóveis
+    responses:
+      200:
+        description: Caracteristicas de imoveis
+
+/imoveis/favoritos:
+  get:
+    summary: Busca todos os imoveis favoritos
+    tags:
+      - Imóveis
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Imoveis favoritos
+
 /imoveis/corretor/{id}:
   get:
     summary: Busca imoveis pelo id do corretor

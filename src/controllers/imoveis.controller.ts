@@ -6,8 +6,12 @@ import {
   getImoveis,
   getImovelbyCorretorId,
   getImovelbyId,
+  getTiposImovel,
+  getSubTiposImovel,
+  getCaracteristicasImovel,
   postImovel,
   updateImovel,
+  getImoveisFavoritos,
 } from "../services/imoveis.service";
 import { ImovelCreateInput, ImovelUpdateInput } from "../models/imoveis.model";
 
@@ -54,6 +58,54 @@ export async function getImovelbyCorretorIdController(
   } catch (err) {
     console.error("Erro ao buscar imoveis do proprietário:", err);
     res.status(500).send({ error: "Erro no servidor", details: err });
+  }
+}
+
+export async function getTiposImovelController(req: Request, res: Response) {
+  const tipos = await getTiposImovel();
+  try {
+    if(tipos) {
+      return res.json(tipos);
+    }
+  } catch (error) {
+    console.error("Erro ao buscar imoveis:", error);
+    res.status(500).send({ error: "Erro no servidor", details: error });
+  }
+}
+
+export async function getSubTiposImovelController(req: Request, res: Response) {
+  const tipos = await getSubTiposImovel();
+  try {
+    if(tipos) {
+      return res.json(tipos);
+    }
+  } catch (error) {
+    console.error("Erro ao buscar imoveis:", error);
+    res.status(500).send({ error: "Erro no servidor", details: error });
+  }
+}
+
+export async function getCaracteristicasImovelController(req: Request, res: Response) {
+  const tipos = await getCaracteristicasImovel();
+  try {
+    if(tipos) {
+      return res.json(tipos);
+    }
+  } catch (error) {
+    console.error("Erro ao buscar imoveis:", error);
+    res.status(500).send({ error: "Erro no servidor", details: error });
+  }
+}
+
+export async function getImoveisFavoritosController(req: Request, res: Response) {
+  const tipos = await getImoveisFavoritos();
+  try {
+    if(tipos) {
+      return res.json(tipos);
+    }
+  } catch (error) {
+    console.error("Erro ao buscar imoveis:", error);
+    res.status(500).send({ error: "Erro no servidor", details: error });
   }
 }
 
