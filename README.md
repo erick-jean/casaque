@@ -28,8 +28,8 @@ npm install
 
 ```
 
-## 💻 Executando o Projeto
-# Modo Desenvolvimento
+# 💻 Executando o Projeto
+## Modo Desenvolvimento
 ```bash
 npm run dev
 ```
